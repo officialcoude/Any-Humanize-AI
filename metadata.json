@@ -1,0 +1,6 @@
+{
+  "name": "Any HumanizeAI",
+  "description": "A powerful text transformation tool that converts robotic or AI-generated text into natural, human-like writing using the Gemini 2.5 Flash model.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
