@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Any HumanizeAI - Make Text Natural</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            animation: {
+              blob: "blob 7s infinite",
+            },
+            keyframes: {
+              blob: {
+                "0%": { transform: "translate(0px, 0px) scale(1)" },
+                "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                "100%": { transform: "translate(0px, 0px) scale(1)" },
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        /* background-color: #f8fafc; Handled by Tailwind classes now */
+        overflow-x: hidden;
+      }
+      
+      /* Selection Color */
+      ::selection {
+        background-color: #22c55e; /* Green-500 */
+        color: white;
+      }
+      
+      /* Custom scrollbar for textareas */
+      textarea::-webkit-scrollbar, div::-webkit-scrollbar {
+        width: 8px;
+      }
+      textarea::-webkit-scrollbar-track, div::-webkit-scrollbar-track {
+        background: transparent; 
+      }
+      textarea::-webkit-scrollbar-thumb, div::-webkit-scrollbar-thumb {
+        background: #cbd5e1; 
+        border-radius: 4px;
+      }
+      .dark textarea::-webkit-scrollbar-thumb, .dark div::-webkit-scrollbar-thumb {
+        background: #475569; /* Slate-600 */
+      }
+      textarea::-webkit-scrollbar-thumb:hover, div::-webkit-scrollbar-thumb:hover {
+        background: #22c55e; /* Green Hover */
+      }
+
+      /* Glassmorphism Utilities */
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+      }
+      
+      .dark .glass-panel {
+        background: rgba(15, 23, 42, 0.65); /* Slate-900 with opacity */
+        border-color: rgba(255, 255, 255, 0.05);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      .glass-input {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+        transition: all 0.3s ease;
+      }
+
+      .dark .glass-input {
+        background: rgba(30, 41, 59, 0.5); /* Slate-800 with opacity */
+        border-color: rgba(255, 255, 255, 0.05);
+        color: #e2e8f0; /* Slate-200 */
+        box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+      }
+      
+      .glass-input:focus, .glass-input:focus-within {
+        background: rgba(255, 255, 255, 0.85);
+        border-color: rgba(34, 197, 94, 0.4); /* Green-500 */
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1), inset 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+      }
+
+      .dark .glass-input:focus, .dark .glass-input:focus-within {
+        background: rgba(30, 41, 59, 0.8);
+        border-color: rgba(34, 197, 94, 0.5);
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2), inset 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      /* Background Blobs */
+      .bg-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        z-index: -1;
+        opacity: 0.6;
+        animation: float 20s infinite ease-in-out alternate;
+      }
+
+      /* Shimmer Animation */
+      .shimmer {
+        background: #f6f7f8;
+        background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+        background-repeat: no-repeat;
+        background-size: 800px 100%; 
+        display: inline-block;
+        position: relative; 
+        animation-duration: 1s;
+        animation-fill-mode: forwards; 
+        animation-iteration-count: infinite;
+        animation-name: placeholderShimmer;
+        animation-timing-function: linear;
+      }
+
+      .dark .shimmer {
+        background: #1e293b; /* Slate-800 */
+        background-image: linear-gradient(to right, #1e293b 0%, #334155 20%, #1e293b 40%, #1e293b 100%);
+      }
+
+      @keyframes placeholderShimmer {
+        0% { background-position: -468px 0; }
+        100% { background-position: 468px 0; }
+      }
+      
+      .animate-fade-in-up {
+        animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        opacity: 0;
+      }
+      
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .animate-pulse-slow {
+        animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+    </style>
+
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "@heroicons/react/": "https://aistudiocdn.com/@heroicons/react@^2.2.0/"
+  }
+}
+</script>
+  <script type="module" crossorigin src="/Any-Humanize-AI/assets/index-BlERLc5t.js"></script>
+</head>
+  <body>
+    <div id="root"></div>
+</body>
+</html>
