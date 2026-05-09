@@ -1,6 +1,7 @@
 {
   "name": "any-humanizeai",
   "private": true,
+  "homepage": "https://officialcoude.github.io/Any-Humanize-AI/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
